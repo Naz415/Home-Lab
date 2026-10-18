@@ -8,7 +8,7 @@ layout: page
 | | |
 |---|---|
 | **Date** | 8 September 2026 |
-| **Status** | **Proposed** |
+| **Status** | **Withdrawn, 13 September 2026** |
 | **Decided by** | The owner |
 
 ### Status history
@@ -17,6 +17,7 @@ layout: page
 |---|---|
 | before 8 Sep | T320 **declined**, on power cost |
 | 8 Sep | **Proposed** — this record written. Bays, not power, were the real constraint |
+| 13 Sep | **Withdrawn** — the owner elected to keep the original hardware |
 
 ## Context — what the earlier evaluation got wrong
 
