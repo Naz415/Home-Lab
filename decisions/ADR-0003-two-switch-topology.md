@@ -101,8 +101,11 @@ UI off, SSH key-only, authorized managers pinned to `ADMIN-WS`, management
 reachable only through the firewall's default-deny, no routing, no certificates
 held, VLAN 40 never seen.
 
-**An attacker who owns this switch gets layer 2 on three VLANs that were
-already the untrusted ones.**
+**An attacker who owns this switch gets layer 2 on four VLANs: 20, 30, 50 and
+60** — three untrusted segments plus management. *(Corrected 4 October. This
+line first said "three VLANs that were already the untrusted ones," which
+undercounted and mischaracterised: VLAN 20 is management and was never
+untrusted. The acceptance still holds, stated honestly.)*
 
 ## 2. The GPU
 

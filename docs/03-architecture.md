@@ -41,7 +41,7 @@ every routing decision.
                                                  |
      +===========================================v===+
      |  ACCESS-SW  HP ProCurve 3500yl-24G-PoE+       |
-     |  J8692A · L2 only · NOT on the UPS            |
+     |  J9310A · L2 only · NOT on the UPS            |
      +--+---------+---------+---------+------+-------+
         | 1-8     | 9-12    | 13-16   | 17          18-22
      TRUSTED     IOT       DMZ       AP           parked
@@ -85,7 +85,7 @@ Default-deny between every pair. VLAN 1 is emptied on both switches.
 | Switch | Role | Management | Carries |
 |---|---|---|---|
 | **Cisco Catalyst C1200-8P-E-2G** | CORE-SW | `CORE-SW-IP` | All five machines, both firewall trunks, the admin workstation. **The only switch carrying VLAN 40.** On the UPS |
-| **HP ProCurve 3500yl-24G-PoE+ (J8692A)** | ACCESS-SW | `ACCESS-SW-IP` | Clients, IoT, DMZ devices, both access points. **L2 only, `no ip routing`.** Firmware frozen at K.16.02.0036 (October 2022). Not on the UPS |
+| **HP ProCurve 3500yl-24G-PoE+ (J9310A)** | ACCESS-SW | `ACCESS-SW-IP` | Clients, IoT, DMZ devices, both access points. **L2 only, `no ip routing`.** Firmware frozen at K.16.02.0036 (October 2022). Not on the UPS |
 
 **The rule that placed them** ([ADR-0003](../decisions/ADR-0003-two-switch-topology.md)):
 *the ProCurve's security features are edge features and its liabilities are
@@ -130,7 +130,7 @@ that must be re-checked for VLAN 40 every time.
 | Link | Mode | Members |
 |---|---|---|
 | FW ↔ CORE-SW GE1 | Trunk | tagged 20,30,40,50,60 native 999 |
-| DMZ-HOST standby VM leg ↔ CORE-SW GE5 | Trunk | tagged 20,30,40,50,60 native 999 |
+| FW-STBY ↔ CORE-SW GE5 | Trunk | tagged 20,30,40,50,60 native 999 |
 | CORE-SW GE9 ↔ ACCESS-SW 24 | Trunk | tagged 20,30,50,60 native 999 |
 | CORE-SW GE10 ↔ ACCESS-SW 23 | Trunk, uncabled until a LAG exists on both ends | tagged 20,30,50,60 native 999 |
 
@@ -181,7 +181,7 @@ internet-only rule in this design has `any` as its destination.
 ## 3.7 Storage and backup
 
 ```
-P1  raidz2, 6 × Kingston DC500M 480 GB, LSI SAS3008 (IT mode, SFF-8087)   on STORE
+P1  raidz2, 6 × Kingston DC500M 480 GB, LSI SAS3008 (IT mode, SFF-8643)   on STORE
  └─> P2  mirror, 2 × Seagate ST4000DM000 4 TB (conditional)               on STORE
       └─> P3  2 TB SSD                                                   on BACKUP, which PULLS
            └─> encrypted USB, offline, rotated off-site

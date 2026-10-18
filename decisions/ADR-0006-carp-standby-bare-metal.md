@@ -8,7 +8,7 @@ layout: page
 | | |
 |---|---|
 | **Date** | 2 October 2026 |
-| **Status** | Accepted |
+| **Status** | Accepted. **"Genuine peer" withdrawn 4 October** (below) |
 | **Decided by** | The owner |
 
 *This is the first time a known compromise in this build was removed rather
@@ -116,8 +116,29 @@ at every boot. *This is now the fourth machine without Secure Boot.*
 
 **Throughput.** Roughly a quarter of the master's CPU. Published figures for this
 class of hardware: about 600 Mbps with the in-tree driver, up to about 940 with
-the vendor driver. **Neither option holds a clean 1 Gbps line rate.** With no IDS on the
-firewall, **the standby is a genuine peer** for stateful firewalling and NAT.
+the vendor driver. **Neither option holds a clean 1 Gbps line rate.**
+
+## Ruled 4 October — "genuine peer" is withdrawn
+
+The first version of this record called the standby a *genuine peer*. **That was
+not earned.**
+
+**It is a topological peer and a capacity-limited one.** It has the master's
+shape (own WAN leg, own trunk, bare metal, same OPNsense version) and on failure
+takes over routing, NAT, the default-deny ruleset and inter-VLAN policy. **It is
+not a hardware peer:** a quarter of the CPU, 4 GB, Realtek where the master has
+Intel, a dead BIOS, one 2011-era SSD against a mirror. And the premise rested on
+the firewall running no IDS, which the owner intends to add later.
+
+One thing the original write-up left out: the VM standby ran on DMZ-HOST, which
+has **more compute than the firewall itself**. This move did not trade up on
+every axis. **It traded compute for the trust boundary**, deliberately, and the
+boundary was worth more. Stating it as a pure win was the overclaim.
+
+**Standing consequence:** if IDS is ever added to the firewall, this decision
+must be revisited in the same breath. A Braswell will not run Suricata at line
+rate, and a standby that cannot do what the master does is a silent security
+downgrade waiting for an outage.
 
 ## Still open
 
