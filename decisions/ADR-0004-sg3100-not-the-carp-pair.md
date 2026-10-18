@@ -8,7 +8,7 @@ layout: page
 | | |
 |---|---|
 | **Date** | 23 September 2026 |
-| **Status** | Accepted |
+| **Status** | Accepted. **Disposition 4 October: shelved, powered off, third-tier fallback** |
 | **Decided by** | The owner |
 
 This record exists because **two firewall appliances on a shelf are a standing
@@ -33,9 +33,7 @@ discipline) assumes OPNsense.
 
 pfSense Plus, via a recovery image requested from Netgate support (not a public
 download), on hardware end-of-life since October 2023, with **no Suricata**
-(dropped for armv7 at pfSense 24.03). And it will not be patched again:
-FreeBSD 16 drops armv7, so the operating system underneath stops building
-for it.
+(dropped for armv7 at pfSense 24.03).
 
 ## Decision
 
@@ -62,3 +60,41 @@ Mixing is not a third option: an OPNsense master with a pfSense standby would
 elect at the CARP level, but configuration sync would not work and rulesets are
 not portable. Two separately maintained firewalls drifting apart while
 appearing to be a pair is worse than one firewall.
+
+## Disposition — 4 October
+
+**Shelved, powered off, retained as a third-tier fallback.** Every
+firewall-shaped role is filled by x86 hardware running the fleet's own OS.
+Putting an SG-3100 into service would add a second firewall OS family, with its
+own advisories, cadence and recovery procedure, for zero capability the fleet
+lacks.
+
+*A shelved appliance is an option. A powered-on end-of-life appliance is an
+obligation.*
+
+**The time-sensitive part was not the shelving.** A fallback you cannot
+reinstall is a paperweight stored on purpose, and the armv7 recovery image comes
+only from a support request that Netgate could stop honouring without notice.
+**The request was submitted on 4 October and the image arrived the same day**;
+it decompressed cleanly and matched the vendor's published checksum.
+
+### Correction recorded on 4 October
+
+This record originally said the appliances *"will not be patched again."* That
+was wrong when written: pfSense Plus 26.07 (August 2026) still supported the
+3100. Netgate's description of armv7 as heading for unbuildable carries **no
+published end date**. And a CVE in pfSense's HA sync path, cited here as an
+armv7 argument, affects x86 equally and requires LDAP/RADIUS authentication to
+reach. **The conclusion survives all three corrections, because it never rested
+on them**: there is nothing to install for OPNsense, and Suricata does not build
+for armv7.
+
+### Handling, absolute
+
+One unit carries a **prior corporate owner's asset tag**. Neither unit has ever
+been booted. If they come off the shelf: isolated `TEST-NET` only, factory reset
+before anything can reach them, **do not catalogue a prior owner's
+configuration**, RAM disks on and heavy logging off to spare the eMMC.
+
+Device identifiers (serials, MACs, device IDs) are held in the private record
+only.
