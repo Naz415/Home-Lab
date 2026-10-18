@@ -26,8 +26,8 @@ every routing decision.
                |                          |
      +---------v---------+      +---------v---------+
      | FW  OPNsense      |      | FW-STBY OPNsense  |
-     | bare metal        | CARP | VM on DMZ-HOST    |
-     | OptiPlex 9020 SFF |<---->| usb-host NICs     |
+     | bare metal        | CARP | bare metal        |
+     | OptiPlex 9020 SFF |<---->| Braswell thin cl. |
      +---------+---------+      +---------+---------+
                | trunk 20,30,40,50,60     | trunk 20,30,40,50,60
                | GE1                      | GE5
@@ -56,10 +56,10 @@ every routing decision.
 |---|---|---|---|
 | **FW** | Dell OptiPlex 9020 SFF, i5-4590, 12 GB | Router and firewall, nothing else | OPNsense, bare metal, ZFS mirror on two SATA SSDs |
 | **TRUST** | Dell OptiPlex 9020 Micro, i5-4590T, 16 GB | Trust root: step-ca, internal DNS, monitoring | Proxmox VE 9.2 |
-| **DMZ-HOST** | HP ProDesk 600 G6 Mini, i5-10500T, 16 GB | DMZ and reverse proxy; hosts the CARP standby VM | Proxmox VE 9.2, ZFS mirror on two NVMe |
+| **DMZ-HOST** | HP ProDesk 600 G6 Mini, i5-10500T, 16 GB | DMZ and reverse proxy | Proxmox VE 9.2, ZFS mirror on two NVMe |
 | **STORE** | Dell PowerEdge T320, Xeon E5-2470 v2 10C/20T, 80 GB ECC | Storage, backups, data services | Proxmox VE 9.2 |
 | **BACKUP** | Dell OptiPlex 7040 Micro, i5-6500T, 16 GB | Off-chassis backup target. **Pulls only** | Debian 13 |
-| **FW-STBY** | VM on DMZ-HOST; network legs are USB adapters via QEMU `usb-host` | CARP standby for FW | OPNsense VM |
+| **FW-STBY** | Braswell thin client, Celeron N3150, 4 GB, 2 × 1 GbE | CARP standby for FW | OPNsense, bare metal |
 
 The three Proxmox hosts are deliberately **not clustered**. A Lenovo TS140,
 the previous single server, is retired from the design and becomes the bench
