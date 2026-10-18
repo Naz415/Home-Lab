@@ -8,7 +8,7 @@ layout: page
 | | |
 |---|---|
 | **Date** | 8 September 2026 |
-| **Status** | Accepted |
+| **Status** | Accepted. **Its first decision is superseded** by [ADR-0002](ADR-0002-storage-host-moves-to-t320.md) on 23 September |
 | **Decided by** | The owner |
 
 ## Context
@@ -59,3 +59,10 @@ the restore drill.
    hosts must never reach VLAN 20, 30 or 40.
 2. **No shared credentials or key material.** The lab gets its own CA root.
 3. **It does not delay the build.**
+
+## Consequences
+
+- The two "pfSense appliances" in the bundle turn out to be Netgate SG-3100s,
+  which become [ADR-0004](ADR-0004-sg3100-not-the-carp-pair.md).
+- **Two weeks later the storage-host decision reversed** (ADR-0002). This record
+  is kept as written; its first decision is history, not current design.
