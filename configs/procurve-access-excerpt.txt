@@ -24,7 +24,7 @@ vlan 50
    exit
 vlan 60
    name "IOT"
-   untagged 9-12
+   untagged 9-12,18
    tagged 23,24
    exit
 vlan 998
