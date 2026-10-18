@@ -1,0 +1,41 @@
+; ACCESS-SW — HP ProCurve 3500yl-24G-PoE+ (J9310A), K.16.02.0036
+; Excerpt: VLAN membership and parked ports only. Sanitized; management
+; addressing and authentication blocks omitted. PLANNED configuration —
+; not yet applied to the switch.
+;
+; Rule: every port 1-24 is untagged in exactly one VLAN, so VLAN 1 empties.
+; Rule: VLAN 40 is never defined here. Check after every edit.
+
+no ip routing
+
+vlan 20
+   name "MGMT"
+   tagged 23,24
+   exit
+vlan 30
+   name "TRUSTED"
+   untagged 1-8,17
+   tagged 23,24
+   exit
+vlan 50
+   name "DMZ"
+   untagged 13-16
+   tagged 23,24
+   exit
+vlan 60
+   name "IOT"
+   untagged 9-12
+   tagged 23,24
+   exit
+vlan 998
+   name "PARKING"
+   untagged 18-22
+   exit
+vlan 999
+   name "NATIVE"
+   untagged 23,24
+   exit
+
+interface 18-22
+   disable
+   exit
