@@ -149,7 +149,7 @@ make, and **label both outlet groups**.
 
 1. **Can the MR60 tag VLANs in AP mode?** If not, every wireless device shares
    VLAN 30.
-2. Can the last ProCurve firmware actually be obtained?
+2. Can the last ProCurve firmware actually be obtained? (Yes, 29 September.)
 3. Fifteen minutes at the ProCurve console with `?` completion, to settle every
    command the build document marks VERIFY.
 4. **802.1X with EAP-TLS from the internal CA** is the natural end state, and is

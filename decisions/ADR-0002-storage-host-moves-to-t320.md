@@ -115,8 +115,8 @@ disable. Its out-of-band exposure is the iDRAC.
 
 - The TS140 retires from the fleet and becomes the **bench**: switch-build
   rehearsal, CARP failover tests, the restore drill.
-- The 4 TB pair is proposed for the second pool, conditionally, once
-  its SMART readings are taken.
+- The 4 TB pair is proposed for the second pool, conditionally
+  ([ADR-0005](ADR-0005-smart-readings-second-pool.md)).
 - **Open, and the whole layout rests on it:** test-fit the empty six-drive cage
   in a media bay. Dell document a latch and give no dimensions. This became the
   build's single physical stop gate.

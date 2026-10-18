@@ -188,7 +188,8 @@ P1  raidz2, 6 × Kingston DC500M 480 GB, LSI SAS3008 (IT mode, SFF-8087)   on ST
 ```
 
 - **Greenfield.** No data exists anywhere yet. Mistakes cost time, not data.
-- `P2`'s drive pair is admitted only after `smartctl -t long` passes on both.
+- `P2`'s drive pair is admitted only after `smartctl -t long` passes on both
+  ([ADR-0005](../decisions/ADR-0005-smart-readings-second-pool.md)).
 - `BACKUP` pulls; nothing pushes to it. Its Debian OpenZFS is the oldest
   importer in the fleet, so every pool pins `compatibility=` to it.
 - STORE's ARC is capped explicitly at 16 GiB of 80 GB. On Proxmox VE 9 an
