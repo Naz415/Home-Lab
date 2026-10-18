@@ -1,0 +1,26 @@
+title: Home-Lab Design Record
+description: >-
+  Design record of a five-machine, six-VLAN home laboratory: Proxmox VE,
+  OPNsense, two-tier switching, and a documented review methodology.
+baseurl: /Home-Lab
+url: https://naz415.github.io
+theme: minima
+show_excerpts: false
+minima:
+  skin: dark
+  date_format: "%-d %B %Y"
+header_pages:
+  - docs/03-architecture.md
+  - decisions/index.md
+  - journal.md
+  - CHRONOLOGY.md
+  - docs/04-methodology.md
+plugins:
+  - jekyll-relative-links
+  - jekyll-optional-front-matter
+relative_links:
+  enabled: true
+  collections: true
+exclude:
+  - README.md
+  - LICENSE.md
