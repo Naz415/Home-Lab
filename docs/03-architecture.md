@@ -6,9 +6,10 @@ permalink: /docs/architecture/
 
 # 3. Architecture
 
-*This is the design, not the network in production. Every change to this
-file is a commit; `git log -p docs/03-architecture.md` is the history of the
-design, including its errors.*
+*Design as of 18 October 2026. This is the design, not the network in
+production — nothing has been cut over yet; see [§5 Build status](05-build-status.md).
+Every change to this file is a commit; `git log -p docs/03-architecture.md`
+is the history of the design, including its errors.*
 
 ## 3.1 Overview
 
