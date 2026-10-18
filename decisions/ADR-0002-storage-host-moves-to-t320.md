@@ -79,7 +79,7 @@ Where it disagrees with the listing above, this section wins.
 | Memory | **80 GB** at 1600 MHz (the listing said 64) |
 | BIOS | 2.7.0 (2019), UEFI |
 | Secure Boot | **Unsupported** |
-| Lifecycle Controller | Disabled |
+| Lifecycle Controller | Reported Disabled *(but see the [4 October audit](../_posts/2026-10-04-first-claims-audit.md))* |
 | Drives as delivered | 1 TB SATA SSD, 2 × Seagate ST4000DM000 4 TB, one 36 GB Raptor from about 2004 |
 
 ### Three ways the machine differed from the plan
@@ -102,7 +102,7 @@ path:
 | # | Component | From | To | Why |
 |---|---|---|---|---|
 | 1 | iDRAC7 | unread | 2.65.65.65 | CVE-2020-5344 |
-| 2 | BIOS | 2.7.0 | 2.9.0 (Feb 2020, the last) | Carries the CVE-2019-0151 Management Engine fix |
+| 2 | BIOS | 2.7.0 | 2.9.0 (Feb 2020, the last) | Carries the CVE-2019-0151 fix — **Intel TXT, not the Management Engine** |
 
 Order: iDRAC first, BIOS second. Then, before the machine has a network
 address: iDRAC NIC disabled, IPMI-over-LAN disabled, a setup password, VT-x and
