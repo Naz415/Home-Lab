@@ -41,7 +41,7 @@ every routing decision.
                                                  |
      +===========================================v===+
      |  ACCESS-SW  HP ProCurve 3500yl-24G-PoE+       |
-     |  J8692A · L2 only · NOT on the UPS            |
+     |  J9310A · L2 only · NOT on the UPS            |
      +--+---------+---------+---------+------+-------+
         | 1-8     | 9-12    | 13-16   | 17          18-22
      TRUSTED     IOT       DMZ       AP           parked
@@ -85,7 +85,7 @@ Default-deny between every pair. VLAN 1 is emptied on both switches.
 | Switch | Role | Management | Carries |
 |---|---|---|---|
 | **Cisco Catalyst C1200-8P-E-2G** | CORE-SW | `CORE-SW-IP` | All five machines, both firewall trunks, the admin workstation. **The only switch carrying VLAN 40.** On the UPS |
-| **HP ProCurve 3500yl-24G-PoE+ (J8692A)** | ACCESS-SW | `ACCESS-SW-IP` | Clients, IoT, DMZ devices, both access points. **L2 only, `no ip routing`.** Firmware frozen at K.16.02.0036 (October 2022). Not on the UPS |
+| **HP ProCurve 3500yl-24G-PoE+ (J9310A)** | ACCESS-SW | `ACCESS-SW-IP` | Clients, IoT, DMZ devices, both access points. **L2 only, `no ip routing`.** Firmware frozen at K.16.02.0036 (October 2022). Not on the UPS |
 
 **The rule that placed them** ([ADR-0003](../decisions/ADR-0003-two-switch-topology.md)):
 *the ProCurve's security features are edge features and its liabilities are
