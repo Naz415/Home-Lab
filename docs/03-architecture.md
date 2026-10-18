@@ -181,7 +181,7 @@ internet-only rule in this design has `any` as its destination.
 ## 3.7 Storage and backup
 
 ```
-P1  raidz2, 6 × Kingston DC500M 480 GB, LSI SAS3008 (IT mode, SFF-8087)   on STORE
+P1  raidz2, 6 × Kingston DC500M 480 GB, LSI SAS3008 (IT mode, SFF-8643)   on STORE
  └─> P2  mirror, 2 × Seagate ST4000DM000 4 TB (conditional)               on STORE
       └─> P3  2 TB SSD                                                   on BACKUP, which PULLS
            └─> encrypted USB, offline, rotated off-site
