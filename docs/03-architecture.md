@@ -55,9 +55,9 @@ every routing decision.
 | Role label | Hardware | Job | OS |
 |---|---|---|---|
 | **FW** | Dell OptiPlex 9020 SFF, i5-4590, 12 GB | Router and firewall, nothing else | OPNsense, bare metal, ZFS mirror on two SATA SSDs |
-| **TRUST** | Dell OptiPlex 9020 Micro, i5-4590T, 16 GB | Trust root: step-ca, internal DNS, monitoring | Proxmox VE 8.4 → 9 |
-| **DMZ-HOST** | HP ProDesk 600 G6 Mini, i5-10500T, 16 GB | DMZ and reverse proxy; hosts the CARP standby VM | Proxmox VE 8.4 → 9, ZFS mirror on two NVMe |
-| **STORE** | Dell PowerEdge T320, Xeon E5-2470 v2 10C/20T, 80 GB ECC | Storage, backups, data services | Proxmox VE 8.4 → 9 |
+| **TRUST** | Dell OptiPlex 9020 Micro, i5-4590T, 16 GB | Trust root: step-ca, internal DNS, monitoring | Proxmox VE 9.2 |
+| **DMZ-HOST** | HP ProDesk 600 G6 Mini, i5-10500T, 16 GB | DMZ and reverse proxy; hosts the CARP standby VM | Proxmox VE 9.2, ZFS mirror on two NVMe |
+| **STORE** | Dell PowerEdge T320, Xeon E5-2470 v2 10C/20T, 80 GB ECC | Storage, backups, data services | Proxmox VE 9.2 |
 | **BACKUP** | Dell OptiPlex 7040 Micro, i5-6500T, 16 GB | Off-chassis backup target. **Pulls only** | Debian 13 |
 | **FW-STBY** | VM on DMZ-HOST; network legs are USB adapters via QEMU `usb-host` | CARP standby for FW | OPNsense VM |
 
@@ -197,8 +197,9 @@ P1  raidz2, 6 × Kingston DC500M 480 GB, LSI SAS3008 (IT mode, SFF-8087)   on ST
 
 ## 3.8 Transcoding
 
-AMD Radeon Pro WX 2100 in STORE; whether it is passed to a container or a VM
-is not yet decided. A GTX 1060 was shelved: the T320 has no documented GPU power cable, and NVIDIA's
+AMD Radeon Pro WX 2100 in STORE, passed to an **unprivileged LXC** as a render
+node rather than to a VM (the AMD reset bug makes VM passthrough a poor trade).
+A GTX 1060 was shelved: the T320 has no documented GPU power cable, and NVIDIA's
 580 driver branch is the last for Pascal. The cost is HEVC 10-bit *encode*; the
 common transcode, HEVC 10-bit in and H.264 out, is unaffected
 ([ADR-0003](../decisions/ADR-0003-two-switch-topology.md) §2).
