@@ -150,8 +150,10 @@ make, and **label both outlet groups**.
 
 ## Open items this decision created
 
-1. **Can the MR60 tag VLANs in AP mode?** If not, every wireless device shares
-   VLAN 30.
+1. ~~Can the MR60 tag VLANs in AP mode? If not, every wireless device shares
+   VLAN 30.~~ **Closed 25 September, by hardware already in the house** — see
+   the [journal entry](../_posts/2026-09-25-two-access-points.md). *The closure
+   did not reach this record until 4 October.*
 2. Can the last ProCurve firmware actually be obtained? (Yes, 29 September.)
 3. Fifteen minutes at the ProCurve console with `?` completion, to settle every
    command the build document marks VERIFY.

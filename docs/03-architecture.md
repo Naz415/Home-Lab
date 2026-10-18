@@ -43,11 +43,11 @@ every routing decision.
      |  ACCESS-SW  HP ProCurve 3500yl-24G-PoE+       |
      |  J9310A · L2 only · NOT on the UPS            |
      +--+---------+---------+---------+------+-------+
-        | 1-8     | 9-12    | 13-16   | 17          18-22
-     TRUSTED     IOT       DMZ       AP           parked
-      u30        u60       u50      u30           u998
-                                  (trusted
-                                   Wi-Fi)
+        | 1-8     | 9-12    | 13-16   | 17   | 18    19-22
+     TRUSTED     IOT       DMZ       AP     AP    parked
+      u30        u60       u50      u30    u60    u998
+                                  (trusted (IoT
+                                   Wi-Fi)  Wi-Fi)
 ```
 
 ## 3.2 The machines
@@ -120,7 +120,8 @@ would reintroduce VLAN 40 silently.**
 | 9–12 | IoT devices | Access | untagged 60 | snooping · ARP protect · IP lockdown · BPDU protect |
 | 13–16 | DMZ devices | Access | untagged 50 | snooping · ARP protect · IP lockdown · BPDU protect |
 | 17 | Netgear MR60 mesh AP (trusted Wi-Fi) | Access | untagged 30 | snooping · ARP protect · BPDU protect · no lockdown at first |
-| 18–22 | spare | Shutdown | 998 | parked and disabled |
+| 18 | Netgear Nighthawk AC1750 AP (IoT Wi-Fi) | Access | untagged 60 | snooping · ARP protect · BPDU protect · no lockdown at first |
+| 19–22 | spare | Shutdown | 998 | parked and disabled |
 
 ### Trunks
 
@@ -155,17 +156,21 @@ addresses, so a limit punishes the correct configuration.
 
 ## 3.5 The wireless layer
 
-One access point, on an **access port**.
+Two access points, both on **access ports**, neither on a trunk.
 
 | AP | Port | VLAN | Serves |
 |---|---|---|---|
 | Netgear MR60 mesh (kit MK62) + 2 × MS60 satellites, wireless backhaul | 17 | untagged 30 | TRUSTED |
+| Netgear Nighthawk AC1750 | 18 | untagged 60 | IOT |
 
-Whether the MR60 can tag VLANs in AP mode is not yet known. If it cannot,
-**every wireless device shares VLAN 30** until an AP is replaced, and VLAN 60
-contains only wired devices.
+**Neither AP is on a trunk, and that is the design, not a limitation.** An AP on
+an access port emits untagged frames; the switch assigns every frame to the
+port's VLAN in hardware and discards anything tagged at ingress. A compromised
+AP on an access port cannot reach VLAN 20 whatever its firmware does. Per-SSID
+VLAN tagging would put consumer wireless firmware inside the trust boundary of
+every VLAN on the trunk. Neither Netgear can tag in AP mode in any case.
 
-**The Netgear guest-network flag stays off.** It is an AP-internal
+**The Netgear guest-network flag stays off on both.** It is an AP-internal
 client-isolation flag; guest traffic still leaves untagged into the port's own
 VLAN. Enabling it creates the belief that a separate guest network exists.
 

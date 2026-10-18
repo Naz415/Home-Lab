@@ -29,13 +29,13 @@ vlan 60
    exit
 vlan 998
    name "PARKING"
-   untagged 18-22
+   untagged 19-22
    exit
 vlan 999
    name "NATIVE"
    untagged 23,24
    exit
 
-interface 18-22
+interface 19-22
    disable
    exit
