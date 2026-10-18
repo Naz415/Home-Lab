@@ -130,7 +130,7 @@ that must be re-checked for VLAN 40 every time.
 | Link | Mode | Members |
 |---|---|---|
 | FW ↔ CORE-SW GE1 | Trunk | tagged 20,30,40,50,60 native 999 |
-| DMZ-HOST standby VM leg ↔ CORE-SW GE5 | Trunk | tagged 20,30,40,50,60 native 999 |
+| FW-STBY ↔ CORE-SW GE5 | Trunk | tagged 20,30,40,50,60 native 999 |
 | CORE-SW GE9 ↔ ACCESS-SW 24 | Trunk | tagged 20,30,50,60 native 999 |
 | CORE-SW GE10 ↔ ACCESS-SW 23 | Trunk, uncabled until a LAG exists on both ends | tagged 20,30,50,60 native 999 |
 
