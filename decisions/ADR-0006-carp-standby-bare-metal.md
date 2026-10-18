@@ -8,7 +8,7 @@ layout: page
 | | |
 |---|---|
 | **Date** | 2 October 2026 |
-| **Status** | Proposed — gated on the NIC test below |
+| **Status** | Accepted |
 | **Decided by** | The owner |
 
 *This is the first time a known compromise in this build was removed rather
@@ -70,3 +70,59 @@ An open OPNsense issue reports the RTL8111E as **dead on OPNsense 26.1 and
 26.7**: the interface enumerates and does nothing. The firewall was to run 26.7.
 On the evidence, the recommendation was that **bare metal should not be planned
 on**, and that the standby would revert to the VM with its caveat restored.
+
+### The test — fifteen minutes, and it overturned the recommendation
+
+**Measured 2 October: OPNsense booted on the actual hardware.**
+
+```
+CARP event system: OK
+re0: link state changed to DOWN
+re1: link state changed to UP
+```
+
+Both ports enumerate under FreeBSD, and the cabled one negotiated link. The
+regression does not affect this silicon. **The recommendation was wrong, and the
+test is why.** Why it differs is unknown (the `-VL` may be distinct silicon, or
+the bug may be board-specific). It does not matter why; it works, and that was
+the only question.
+
+A reusable false alarm on the way: under Linux only one port showed link
+lights. An administratively down interface never initialises its PHY, so its
+LEDs stay dark whatever is plugged in. The second PHY attached the moment the
+interface was brought up.
+
+**What the test does not retire:** link-up proves enumeration, not stability
+under load. Realtek's documented failure on FreeBSD is a watchdog timeout and
+link flap *under sustained load*, which is exactly the condition a standby
+exists for. CARP tracks link state, so the sequence would be: failover → full
+load → watchdog → flap → CARP oscillates. *A standby that flaps is worse than
+no standby.* **A soak test is therefore owed before deployment**, and it matters
+more after the test passed, not less.
+
+Build steps that follow: install the `os-realtek-re` vendor driver; leave every
+offload and VLAN hardware filtering at the defaults (off); after every OPNsense
+upgrade, check the module loaded and the interface is up, because the plugin has
+failed to reinstall across upgrades before.
+
+## Costs
+
+**Firmware is the real one.** No Secure Boot, no usable TPM, a 2015 reference
+BIOS with no vendor and no future update, at the WAN edge. It is still the
+better trade: the weakness it replaces was a live software path from a host
+already inside the fleet into every VLAN; this one needs physical access or a
+foothold on the standby itself. Partial mitigation: load current CPU microcode
+at every boot. *This is now the fourth machine without Secure Boot.*
+
+**Throughput.** Roughly a quarter of the master's CPU. Published figures for this
+class of hardware: about 600 Mbps with the in-tree driver, up to about 940 with
+the vendor driver. **Neither option holds a clean 1 Gbps line rate.** With no IDS on the
+firewall, **the standby is a genuine peer** for stateful firewalling and NAT.
+
+## Still open
+
+1. Soak test: sustained full-rate traffic across the trunk for hours, watching
+   for watchdog timeouts and link-state changes.
+2. Whether the ISP gateway passes CARP's IP protocol 112 to `224.0.0.18` between
+   its LAN ports. Only the real gateway can answer. Fallback: unicast CARP.
+3. SMART on the standby's 32 GB SSD.
