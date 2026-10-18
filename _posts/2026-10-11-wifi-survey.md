@@ -15,3 +15,6 @@ the far room.
 default naming pattern, broadcasting on the ISP gateway's segment. **Recorded
 as: the ISP gateway's own radio is on**, which would put an unmanaged wireless
 network on the segment directly above the firewall.
+
+> **16 October:** a 2.4 GHz scan with the gateway's radios turned off still
+> shows the SSID. The finding stays open.
