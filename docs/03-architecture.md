@@ -46,8 +46,8 @@ every routing decision.
         | 1-8     | 9-12    | 13-16   | 17   | 18    19-22
      TRUSTED     IOT       DMZ       AP     AP    parked
       u30        u60       u50      u30    u60    u998
-                                  (trusted (IoT
-                                   Wi-Fi)  Wi-Fi)
+                                  (trusted (IoT +
+                                   Wi-Fi)  guests)
 ```
 
 ## 3.2 The machines
@@ -74,11 +74,16 @@ for rehearsals ([ADR-0002](../decisions/ADR-0002-storage-host-moves-to-t320.md))
 | 30 | TRUSTED | `TRUSTED-NET` | The owner's own devices; reaches published services through FW |
 | 40 | SERVICES | `SERVICES-NET` | Storage and household services. **Exists on CORE-SW only** |
 | 50 | DMZ | `DMZ-NET` | Internet-facing reverse proxy |
-| 60 | IOT | `IOT-NET` | Unpatchable devices. Internet only |
+| 60 | IOT | `IOT-NET` | Unpatchable devices **and guests**. Internet only |
 | 998 | PARKING | — | Unused ports. Goes nowhere |
 | 999 | NATIVE | — | Native VLAN on every trunk. Carries nothing |
 
 Default-deny between every pair. VLAN 1 is emptied on both switches.
+
+A seventh VLAN, 70 GUEST, existed in the design for about four hours on
+4 October 2026 and was withdrawn
+([ADR-0009](../decisions/ADR-0009-vlan70-withdrawn-guests-are-iot.md)). Its
+addition and removal are both visible in this file's history.
 
 ## 3.4 The switching layer
 
@@ -160,7 +165,7 @@ Two access points, both on **access ports**, neither on a trunk.
 | AP | Port | VLAN | Serves |
 |---|---|---|---|
 | Netgear MR60 mesh (kit MK62) + 2 × MS60 satellites, wireless backhaul | 17 | untagged 30 | TRUSTED |
-| Netgear Nighthawk AC1750 | 18 | untagged 60 | IOT |
+| Netgear Nighthawk AC1750 | 18 | untagged 60 | IOT, and guests |
 
 **Neither AP is on a trunk, and that is the design, not a limitation.** An AP on
 an access port emits untagged frames; the switch assigns every frame to the
@@ -173,10 +178,16 @@ every VLAN on the trunk. Neither Netgear can tag in AP mode in any case.
 client-isolation flag; guest traffic still leaves untagged into the port's own
 VLAN. Enabling it creates the belief that a separate guest network exists.
 
+**Guests are IoT** ([ADR-0009](../decisions/ADR-0009-vlan70-withdrawn-guests-are-iot.md)).
+A visitor joins the AC1750's SSID and lands in VLAN 60. The accepted risk, in
+so many words: a visitor's device and every unpatchable device share one
+broadcast domain, in both directions, and nothing at layer 2 mitigates it.
+
 ## 3.6 Firewall policy
 
-Default-deny between all VLANs. VLAN 60 is internet-only; its ruleset is
-not yet written.
+Default-deny between all VLANs. The IOT ruleset is the one whose rule *order*
+carries weight, and it is specified with its verification checks in
+[`verification/iot-ruleset.md`](../verification/iot-ruleset.md).
 
 The upstream ISP gateway sits on `ISP-NET` with its admin page at `ISP-GW`,
 cabled directly to FW and to FW-STBY, so that `ISP-NET` never appears on a
