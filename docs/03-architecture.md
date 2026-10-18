@@ -12,7 +12,7 @@ design, including its errors.*
 
 ## 3.1 Overview
 
-Five machines and a standby, six VLANs, two switches, one firewall that makes
+Five machines and a standby, seven VLANs, two switches, one firewall that makes
 every routing decision.
 
 ```
@@ -75,6 +75,7 @@ for rehearsals ([ADR-0002](../decisions/ADR-0002-storage-host-moves-to-t320.md))
 | 40 | SERVICES | `SERVICES-NET` | Storage and household services. **Exists on CORE-SW only** |
 | 50 | DMZ | `DMZ-NET` | Internet-facing reverse proxy |
 | 60 | IOT | `IOT-NET` | Unpatchable devices. Internet only |
+| 70 | GUEST | `GUEST-NET` | Visitors. Internet only, DNS from FW only ([ruleset](../verification/guest-vlan70-ruleset.md)) |
 | 998 | PARKING | — | Unused ports. Goes nowhere |
 | 999 | NATIVE | — | Native VLAN on every trunk. Carries nothing |
 
@@ -129,10 +130,10 @@ that must be re-checked for VLAN 40 every time.
 
 | Link | Mode | Members |
 |---|---|---|
-| FW ↔ CORE-SW GE1 | Trunk | tagged 20,30,40,50,60 native 999 |
-| FW-STBY ↔ CORE-SW GE5 | Trunk | tagged 20,30,40,50,60 native 999 |
-| CORE-SW GE9 ↔ ACCESS-SW 24 | Trunk | tagged 20,30,50,60 native 999 |
-| CORE-SW GE10 ↔ ACCESS-SW 23 | Trunk, uncabled until a LAG exists on both ends | tagged 20,30,50,60 native 999 |
+| FW ↔ CORE-SW GE1 | Trunk | tagged 20,30,40,50,60,70 native 999 |
+| FW-STBY ↔ CORE-SW GE5 | Trunk | tagged 20,30,40,50,60,70 native 999 |
+| CORE-SW GE9 ↔ ACCESS-SW 24 | Trunk | tagged 20,30,50,60,70 native 999 |
+| CORE-SW GE10 ↔ ACCESS-SW 23 | Trunk, uncabled until a LAG exists on both ends | tagged 20,30,50,60,70 native 999 |
 
 The ProCurve's VLAN commands are in
 [`configs/procurve-access-excerpt.txt`](../configs/procurve-access-excerpt.txt).
